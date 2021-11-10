@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
+const helpers = require('../_helpers')
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })  // 當 multer 偵測到檔案上傳時, 會自動把檔案新增到 temp/
@@ -8,14 +9,17 @@ const upload = multer({ dest: 'temp/' })  // 當 multer 偵測到檔案上傳時
 module.exports = (app, passport) => {
 
   const authenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
+    if (helpers.ensureAuthenticated(req)) {
       return next()
     }
     res.redirect('/signin')
   }
   const authenticatedAdmin = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.isAdmin) { return next() }
+    // if (req.isAuthenticated()) {
+    //   if (req.user.isAdmin) { return next() }
+    if (helpers.ensureAuthenticated(req)) {
+      if (helpers.getUser(req).isAdmin) { return next() }
       return res.redirect('/')
     }
     res.redirect('/signin')
