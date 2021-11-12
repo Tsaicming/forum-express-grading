@@ -36,6 +36,10 @@ module.exports = (app, passport) => {
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+  // test R01 對 GET /admin/users 發出請求
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  // test R01 對 PUT / admin / users / 1 / toggleAdmin 發出請求
+  app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
